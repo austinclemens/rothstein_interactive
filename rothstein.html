@@ -101,6 +101,9 @@ var data={'WA': [[1.12, 1.08, 0.0], [0.0, 0.0, 0.0], [1.05, 1.0, 0.0], [1.08, 1.
 var statesabb = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
 var statedict = {'AK': 'Alaska','AL': 'Alabama','AR': 'Arkansas','AZ': 'Arizona','CA': 'California','CO': 'Colorado','CT': 'Connecticut','DE': 'Delaware','FL': 'Florida','GA': 'Georgia','IA': 'Iowa','ID': 'Idaho','IL': 'Illinois','IN': 'Indiana','KS': 'Kansas','KY': 'Kentucky','LA': 'Louisiana','MA': 'Massachusetts','MD': 'Maryland','ME': 'Maine','MI': 'Michigan','MN': 'Minnesota','MO': 'Missouri','MS': 'Mississippi','MT': 'Montana','NC': 'North Carolina','ND': 'North Dakota','NE': 'Nebraska','NH': 'New Hampshire','NJ': 'New Jersey','NM': 'New Mexico','NV': 'Nevada','NY': 'New York','OH': 'Ohio','OK': 'Oklahoma','OR': 'Oregon','PA': 'Pennsylvania','RI': 'Rhode Island','SC': 'South Carolina','SD': 'South Dakota','TN': 'Tennessee','TX': 'Texas','UT': 'Utah','VA': 'Virginia','VI': 'Virgin Islands','VT': 'Vermont','WA': 'Washington','WI': 'Wisconsin','WV': 'West Virginia','WY': 'Wyoming'}
 var y_bounds=[36,sgheight-25]
+var locked_state=0
+
+sg.click(svg_unlock)
 
 // set the min and max ratio
 var max_ratio_state=0
@@ -155,13 +158,17 @@ function yvalue(y,type){
 }
 
 function drawkey(){
-	var key1=sg.circle(maxwidth+20,55,5).attr({fill:'#67c2a5',keep:1,'stroke-width':1,stroke:'black'})
-	var keytext1=sg.text(maxwidth+30,55,'Court ordered reform').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.3,'dominant-baseline':'middle',delete:1,keep:1})
-	var coords=keytext1.getBBox()
-	var key2=sg.circle(coords.x2+22,55,5).attr({fill:'#fc8d62',keep:1,'stroke-width':1,stroke:'black'})
-	var keytext2=sg.text(coords.x2+32,55,'Legislative reform').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.3,'dominant-baseline':'middle',delete:1,keep:1})
-	var coords=keytext2.getBBox().x2
-	var side=(sgwidth-coords)/2
+	var key1=sg.circle(maxwidth+20,69,5).attr({fill:'#67c2a5',keep:1,'stroke-width':1,stroke:'black'})
+	var keytext1=sg.text(maxwidth+30,69,'School funding reform event').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,'dominant-baseline':'middle',delete:1,keep:1})
+	var keytext2=sg.text(maxwidth+15,55,['Click',' to lock in a state ',' / ']).attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,delete:1,keep:1})
+	keytext2.selectAll("tspan")[0].attr({'font-weight':'bold'})
+	var keytext3=sg.text(maxwidth+180,55,['Click',' again to unlock']).attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,delete:1,keep:1})
+	keytext3.selectAll("tspan")[0].attr({'font-weight':'bold'})
+	// var coords=keytext1.getBBox()
+	// var key2=sg.circle(coords.x2+22,55,5).attr({fill:'#fc8d62',keep:1,'stroke-width':1,stroke:'black'})
+	// var keytext2=sg.text(coords.x2+32,55,'Legislative reform').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.3,'dominant-baseline':'middle',delete:1,keep:1})
+	// var coords=keytext2.getBBox().x2
+	// var side=(sgwidth-coords)/2
 }
 
 function drawgraph(type,first){
@@ -277,29 +284,30 @@ function drawgraph(type,first){
 				}
 
 				if(first==1){
-					if(obs2[2]==2){
-						var circ=sg.circle(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j),ycoord,5).attr({fill:'#fc8d62',type:'statepath',state:state,opacity:.1,'stroke-width':1,stroke:'black',j:j})
-						circ.hover(show_state,hide_state)
-					} else if (obs2[2]==1){
+					if(obs2[2]>0){
 						var circ=sg.circle(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j),ycoord,5).attr({fill:'#67c2a5',type:'statepath',state:state,opacity:.1,'stroke-width':1,stroke:'black',j:j})
-						circ.hover(show_state,hide_state)
-					} else {
-						var circ1=sg.path('M'+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+4.5)+'A4.5,4.5 0 1 1 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-4.5)).attr({fill:'#fc8d62',type:'statepath',state:state,opacity:.1,'halfcirc':1,j:j,'leftcirc':1})
-						var circ2=sg.path('M'+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+4.5)+'A4.5,4.5 0 1 0 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-4.5)).attr({fill:'#67c2a5',type:'statepath',state:state,opacity:.1,'halfcirc':1,j:j,'leftcirc':0})
-						var outline=sg.circle(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j),ycoord,5).attr({fill:'none',stroke:'black','stroke-width':1,opacity:.1,state:state,j:j,type:'statepath'})
-						circ1.hover(show_state,hide_state)
-						circ2.hover(show_state,hide_state)
-					}
+					} 
+					// else if (obs2[2]==1){
+					// 	var circ=sg.circle(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j),ycoord,5).attr({fill:'#67c2a5',type:'statepath',state:state,opacity:.1,'stroke-width':1,stroke:'black',j:j})
+					// 	circ.hover(show_state,hide_state)
+					// } else {
+					// 	var circ1=sg.path('M'+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+4.5)+'A4.5,4.5 0 1 1 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-4.5)).attr({fill:'#fc8d62',type:'statepath',state:state,opacity:.1,'halfcirc':1,j:j,'leftcirc':1})
+					// 	var circ2=sg.path('M'+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+4.5)+'A4.5,4.5 0 1 0 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-4.5)).attr({fill:'#67c2a5',type:'statepath',state:state,opacity:.1,'halfcirc':1,j:j,'leftcirc':0})
+					// 	var outline=sg.circle(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j),ycoord,5).attr({fill:'none',stroke:'black','stroke-width':1,opacity:.1,state:state,j:j,type:'statepath'})
+					// 	circ1.hover(show_state,hide_state)
+					// 	circ2.hover(show_state,hide_state)
+					// }
 				} else{
-					if(obs2[2]==2){
+					if(obs2[2]>0){
 						sg.select("circle[type='statepath'][state='"+state+"'][j='"+j+"']").animate({cy:ycoord},1000)
-					} else if (obs2[2]==1){
-						sg.select("circle[type='statepath'][state='"+state+"'][j='"+j+"']").animate({cy:ycoord},1000)
-					} else {
-						sg.selectAll("path[type='statepath'][state='"+state+"'][j='"+j+"'][leftcirc='1']").animate({path:'M'+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+5)+'A5,5 0 1 1 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-5)},1000)
-						sg.selectAll("path[type='statepath'][state='"+state+"'][j='"+j+"'][leftcirc='0']").animate({path:'M'+(-1+x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+5)+'A5,5 0 1 0 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-5)},1000)
-						sg.select("circle[type='statepath'][state='"+state+"'][j='"+j+"']").animate({cy:ycoord},1000)
-					}
+					} 
+					// else if (obs2[2]==1){
+					// 	sg.select("circle[type='statepath'][state='"+state+"'][j='"+j+"']").animate({cy:ycoord},1000)
+					// } else {
+					// 	sg.selectAll("path[type='statepath'][state='"+state+"'][j='"+j+"'][leftcirc='1']").animate({path:'M'+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+5)+'A5,5 0 1 1 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-5)},1000)
+					// 	sg.selectAll("path[type='statepath'][state='"+state+"'][j='"+j+"'][leftcirc='0']").animate({path:'M'+(-1+x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord+5)+'A5,5 0 1 0 '+(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j))+' '+(ycoord-5)},1000)
+					// 	sg.select("circle[type='statepath'][state='"+state+"'][j='"+j+"']").animate({cy:ycoord},1000)
+					// }
 				}
 			}
 		}
@@ -307,12 +315,17 @@ function drawgraph(type,first){
 		if(first==1){
 			if(obs[0][0]!=0){
 				var statepath=sg.path(path).attr({'stroke':'black','stroke-width':3,fill:'none',state:state,'stroke-opacity':.1,type:'statepath',type2:'nrlythepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
+				var statepathback=sg.path(path).attr({'stroke':'black','stroke-width':16,fill:'none',state:state,'stroke-opacity':0,type:'statepath',type2:'fakepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
 			} else{
 				var statepath=sg.path(path).attr({'stroke':'black','stroke-width':3,fill:'none',state:state,'stroke-opacity':.1,type:'statepath',type2:'nrlythepath',startval:obs[2][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
+				var statepathback=sg.path(path).attr({'stroke':'black','stroke-width':16,fill:'none',state:state,'stroke-opacity':0,type:'statepath',type2:'fakepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
 			}
-			statepath.hover(show_state,hide_state)
+			statepathback.hover(show_state,hide_state)
+			// statepath.click(lock_state)
 		} else{
-			sg.select("path[type='statepath'][state='"+state+"']").animate({'path':path},1000)
+			sg.selectAll("path[type='statepath'][state='"+state+"'][type2='nrlythepath']").animate({'path':path},1000)
+			sg.selectAll("path[type='statepath'][state='"+state+"'][type2='fakepath']").attr({'path':path})
+			// sg.select("path[type='statepath'][state='"+state+"']").animate({'path':path},1000)
 			if(type==1){
 				if(obs[0][0]!=0){
 					sg.select("path[type='statepath'][state='"+state+"']").attr({endval:obs[obs.length-1][0].toFixed(2),startval:obs[0][0].toFixed(2)})
@@ -424,11 +437,49 @@ function drawgraph(type,first){
 	}
 }
 
+// function lock_state(e){
+// 	if(locked_state==0){
+// 		item=Snap(e.target)
+// 		locked_state=item.attr('state')
+// 		sg.selectAll("path[state='"+state+"']").attr({'stroke-opacity':1})
+// 	} else{
+// 		locked_state=0
+// 		sg.selectAll("path[state='"+state+"']").attr({'stroke-opacity':.5})
+// 	}
+// }
+
+function svg_unlock(e){
+	if(e.type=='path'){
+		item=e
+	} else{
+		item=Snap(e.target)
+	}
+	if(locked_state==0 & (item.attr('type2')=='fakepath' | item.type=='circle')){
+		console.log('check')
+		locked_state=item.attr('state')
+		sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':1})
+		// sg.selectAll("path[state='"+state+"']").attr({'stroke-opacity':1})
+	} else if(locked_state!=0 & (item.attr('type2')=='fakepath' | item.type=='circle')){
+		console.log('check2')
+		sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':.1})
+		locked_state=0
+		show_state(e)
+		locked_state=item.attr('state')
+		sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':1})
+	} else if (locked_state!=0 & item.attr('type2')!='fakepath'){
+		console.log('check3')
+		sg.select("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':.5})
+		locked_state=0
+	}
+}
+
 function show_state(e){
-	item=Snap(e.target)
-	state=item.attr('state')
-	select(state)
-	document.getElementById("state_select").value=state
+	if(locked_state==0){
+		item=Snap(e.target)
+		state=item.attr('state')
+		select(state)
+		document.getElementById("state_select").value=state
+	}
 }
 
 function buttondown(type){
@@ -445,17 +496,21 @@ function hide_state(e){}
 function statechange(){
 	state=document.getElementById("state_select").value
 	select(state)
+	locked_state=0
+	a=sg.select("path[state='"+state+"'][type2='fakepath']")
+	svg_unlock(a)
 }
 
 function select(state){
 	selected_state=state
 	sg.selectAll("[temptext]").remove()
-	sg.selectAll("path[state]").attr({'stroke-opacity':.1})
-	sg.selectAll("path[halfcirc]").attr({'opacity':.2})
+	sg.selectAll("path[state][type2='nrlythepath']").attr({'stroke-opacity':.1})
+	// sg.selectAll("path[halfcirc]").attr({'opacity':.2})
 	sg.selectAll("circle[state]").attr({'opacity':.2})
 	sg.selectAll("text:not([state='none'])").attr({opacity:0})
-	sg.selectAll("[state='"+state+"']").attr({opacity:1})
-	sg.selectAll("path[state='"+state+"']").attr({'stroke-opacity':.5})
+	sg.selectAll("[state='"+state+"'][type2='nrlythepath']").attr({opacity:1})
+	sg.selectAll("circle[state='"+state+"']").attr({opacity:1})
+	sg.selectAll("path[state='"+state+"'][type2='nrlythepath']").attr({'stroke-opacity':.5})
 
 	var b=sg.select("path[state='"+state+"'][type='statepath'][type2='nrlythepath']")
 	var a=Snap.parsePathString(b.attr('path'))
