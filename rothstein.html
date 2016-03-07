@@ -158,12 +158,16 @@ function yvalue(y,type){
 }
 
 function drawkey(){
-	var key1=sg.circle(maxwidth+20,69,5).attr({fill:'#67c2a5',keep:1,'stroke-width':1,stroke:'black'})
-	var keytext1=sg.text(maxwidth+30,69,'School funding reform event').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,'dominant-baseline':'middle',delete:1,keep:1})
+	var key1=sg.circle(maxwidth+20,108,5).attr({fill:'#67c2a5',keep:1,'stroke-width':1,stroke:'black'})
+	var keytext1=sg.text(maxwidth+30,109,'School funding reform event').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,'dominant-baseline':'middle',delete:1,keep:1})
 	var keytext2=sg.text(maxwidth+15,55,['Click',' to lock in a state ',' / ']).attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,delete:1,keep:1})
 	keytext2.selectAll("tspan")[0].attr({'font-weight':'bold'})
 	var keytext3=sg.text(maxwidth+180,55,['Click',' again to unlock']).attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,delete:1,keep:1})
 	keytext3.selectAll("tspan")[0].attr({'font-weight':'bold'})
+	sg.line(maxwidth+15,87,maxwidth+35,87).attr({'stroke-width':3,stroke:'#fc8d62'})
+	sg.text(maxwidth+40,87,'All states with no reforms').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,'dominant-baseline':'middle',delete:1,keep:1})
+	sg.line(302,87,322,87).attr({'stroke-width':3,stroke:'#67c2a5'})
+	sg.text(327,87,'All states with at least one reform').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.2,'dominant-baseline':'middle',delete:1,keep:1})
 	// var coords=keytext1.getBBox()
 	// var key2=sg.circle(coords.x2+22,55,5).attr({fill:'#fc8d62',keep:1,'stroke-width':1,stroke:'black'})
 	// var keytext2=sg.text(coords.x2+32,55,'Legislative reform').attr({state:'none','font-family':'Lato','text-anchor':'start','font-size':size*1.3,'dominant-baseline':'middle',delete:1,keep:1})
@@ -287,6 +291,7 @@ function drawgraph(type,first){
 					if(obs2[2]>0){
 						var circ=sg.circle(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j),ycoord,5).attr({fill:'#67c2a5',type:'statepath',state:state,opacity:.1,'stroke-width':1,stroke:'black',j:j})
 					} 
+					if(j==0){circ.attr({type3:'front3'})}
 					// else if (obs2[2]==1){
 					// 	var circ=sg.circle(x_bounds[0]+((x_bounds[1]-x_bounds[0])/21)*(j),ycoord,5).attr({fill:'#67c2a5',type:'statepath',state:state,opacity:.1,'stroke-width':1,stroke:'black',j:j})
 					// 	circ.hover(show_state,hide_state)
@@ -314,15 +319,15 @@ function drawgraph(type,first){
 
 		if(first==1){
 			if(obs[0][0]!=0){
-				var statepath=sg.path(path).attr({'stroke':'black','stroke-width':3,fill:'none',state:state,'stroke-opacity':.1,type:'statepath',type2:'nrlythepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
-				var statepathback=sg.path(path).attr({'stroke':'black','stroke-width':16,fill:'none',state:state,'stroke-opacity':0,type:'statepath',type2:'fakepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
-				if(state=='allreform'){statepath.attr({stroke:'#67c2a5',type3:'aggregates','stroke-opacity':.4})}
+				var statepath=sg.path(path).attr({'stroke':'#ccc','stroke-width':2,fill:'none',state:state,'stroke-opacity':1,type:'statepath',type2:'nrlythepath',type3:'nor',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
+				var statepathback=sg.path(path).attr({type3:'front2','stroke':'black','stroke-width':12,fill:'none',state:state,'stroke-opacity':0,type:'statepath',type2:'fakepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
+				if(state=='allreform'){statepath.attr({stroke:'#67c2a5',type3:'aggregates','stroke-opacity':1})}
 				if(state=='allreform'){statepathback.attr({stroke:'#67c2a5',type3:'aggregates2'})}
-				if(state=='allnorefo'){statepath.attr({stroke:'#67c2a5',type3:'aggregates','stroke-opacity':.4})}
-				if(state=='allnorefo'){statepathback.attr({stroke:'#67c2a5',type3:'aggregates2'})}
+				if(state=='allnorefo'){statepath.attr({stroke:'#fc8d62',type3:'aggregates','stroke-opacity':1})}
+				if(state=='allnorefo'){statepathback.attr({stroke:'#fc8d62',type3:'aggregates2'})}
 			} else{
-				var statepath=sg.path(path).attr({'stroke':'black','stroke-width':3,fill:'none',state:state,'stroke-opacity':.1,type:'statepath',type2:'nrlythepath',startval:obs[2][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
-				var statepathback=sg.path(path).attr({'stroke':'black','stroke-width':16,fill:'none',state:state,'stroke-opacity':0,type:'statepath',type2:'fakepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
+				var statepath=sg.path(path).attr({'stroke':'#ccc','stroke-width':2,fill:'none',state:state,'stroke-opacity':1,type:'statepath',type3:'nor',type2:'nrlythepath',startval:obs[2][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
+				var statepathback=sg.path(path).attr({type3:'front2','stroke':'black','stroke-width':12,fill:'none',state:state,'stroke-opacity':0,type:'statepath',type2:'fakepath',startval:obs[0][0].toFixed(2),endval:obs[obs.length-1][0].toFixed(2)})
 			}
 			statepathback.hover(show_state,hide_state)
 			// statepath.click(lock_state)
@@ -360,8 +365,8 @@ function drawgraph(type,first){
 		var amarker = arrow.marker(0,0,3,3,0,1.5).attr({});
 		var upline=sg.line(tcoords-6,yplace-5,tcoords-6,yplace-10).attr({ident:'none',class:'callout','stroke-width':2,'stroke':'black','shape-rendering':'auto','marker-end':amarker,oneline:0,stroke:'#C63F26',type:'front'})
 		var downline=sg.line(tcoords-6,yplace+4,tcoords-6,yplace+9).attr({ident:'none',class:'callout','stroke-width':2,'stroke':'black','shape-rendering':'auto','marker-end':amarker,oneline:0,stroke:'#C63F26',type:'front'})
-		var leftline=sg.line(maxwidth,y_bounds[0],maxwidth,y_bounds[1]).attr({stroke:'black','stroke-width':1,'shape-rendering':'crispEdges'})
-		var rightline=sg.line(sgwidth-maxwidth,y_bounds[0],sgwidth-maxwidth,y_bounds[1]).attr({stroke:'black','stroke-width':1,'shape-rendering':'crispEdges'})
+		var leftline=sg.line(maxwidth,y_bounds[0],maxwidth,y_bounds[1]).attr({stroke:'black','stroke-width':1,'shape-rendering':'crispEdges',type3:'front3'})
+		var rightline=sg.line(sgwidth-maxwidth,y_bounds[0],sgwidth-maxwidth,y_bounds[1]).attr({stroke:'black','stroke-width':1,'shape-rendering':'crispEdges',type3:'front3'})
 		select('NJ')
 	} else{
 		var arrow = sg.path('M0,0 L0,3 L3,1.5 L0,0').attr({fill: '#C63F26'})
@@ -459,20 +464,25 @@ function svg_unlock(e){
 		item=Snap(e.target)
 	}
 	if(locked_state==0 & (item.attr('type2')=='fakepath' | item.type=='circle')){
-		console.log('check')
 		locked_state=item.attr('state')
-		sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':1})
+		if(locked_state!='allreform' & locked_state!='allnorefo'){
+			sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke':'black'})
+		}
 		// sg.selectAll("path[state='"+state+"']").attr({'stroke-opacity':1})
 	} else if(locked_state!=0 & (item.attr('type2')=='fakepath' | item.type=='circle')){
-		console.log('check2')
-		sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':.1})
+		if(locked_state!='allreform' & locked_state!='allnorefo'){
+			sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke':'#999'})
+		}
 		locked_state=0
 		show_state(e)
 		locked_state=item.attr('state')
-		sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':1})
-	} else if (locked_state!=0 & item.attr('type2')!='fakepath'){
-		console.log('check3')
-		sg.select("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke-opacity':.5})
+		if(locked_state!='allreform' & locked_state!='allnorefo'){
+			sg.selectAll("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke':'black'})
+		}
+	} else if (locked_state!=0){
+		if(locked_state!='allreform' & locked_state!='allnorefo'){
+			sg.select("path[state='"+locked_state+"'][type2='nrlythepath']").attr({'stroke':'#999'})
+		}
 		locked_state=0
 	}
 }
@@ -482,8 +492,9 @@ function show_state(e){
 		item=Snap(e.target)
 		state=item.attr('state')
 		select(state)
-		document.getElementById("state_select").value=state
-		console.log(state)
+		if(state!='allreform' & state!='allnorefo'){
+			document.getElementById("state_select").value=state
+		}
 	}
 }
 
@@ -509,14 +520,14 @@ function statechange(){
 function select(state){
 	selected_state=state
 	sg.selectAll("[temptext]").remove()
-	sg.selectAll("path[state][type2='nrlythepath']").attr({'stroke-opacity':.1})
-	sg.selectAll("path[state][type3='aggregates']").attr({'stroke-opacity':1})
+	sg.selectAll("path[state][type2='nrlythepath'][type3='nor']").attr({'stroke':'#eee'})
+	// sg.selectAll("path[state][type3='aggregates']").attr({'stroke-opacity':1})
 	// sg.selectAll("path[halfcirc]").attr({'opacity':.2})
 	sg.selectAll("circle[state]").attr({'opacity':.2})
 	sg.selectAll("text:not([state='none'])").attr({opacity:0})
 	sg.selectAll("[state='"+state+"'][type2='nrlythepath']").attr({opacity:1})
 	sg.selectAll("circle[state='"+state+"']").attr({opacity:1})
-	sg.selectAll("path[state='"+state+"'][type2='nrlythepath']").attr({'stroke-opacity':.5})
+	sg.selectAll("path[state='"+state+"'][type2='nrlythepath'][type3='nor']").attr({'stroke':'#999'})
 	sg.selectAll("path[state='allreform'][type2='nrlythepath']").attr({'stroke-width':3})
 	sg.selectAll("path[state='allnorefo'][type2='nrlythepath']").attr({'stroke-width':3})
 	if(state=='allnorefo' | state=='allreform'){sg.selectAll("path[state='"+state+"'][type2='nrlythepath']").attr({'stroke-opacity':1,'stroke-width':5})}
@@ -528,13 +539,7 @@ function select(state){
 
 	var ltext=sg.text((maxwidth-6)/2,start-15,state).attr({'font-family':'Lato','font-size':size*1.8,'text-anchor':'middle',state:state,lefttext:0,bottom:0,temptext:1,lefttext:1})
 	if(state=='allnorefo' | state=='allreform'){
-		ltext.attr({text:'reforms','font-size':size*1.4})
-	}
-	if(state=='allnorefo'){
-		var ltext2=sg.text((maxwidth-6)/2,start-32,'All no').attr({'font-family':'Lato','font-size':size*1.4,'text-anchor':'middle',state:state,lefttext:0,bottom:0,temptext:1,lefttext:1})
-	}
-	if(state=='allreform'){
-		var ltext2=sg.text((maxwidth-6)/2,start-32,'All with').attr({'font-family':'Lato','font-size':size*1.4,'text-anchor':'middle',state:state,lefttext:0,bottom:0,temptext:1,lefttext:1})
+		ltext.attr({text:'','font-size':size*1.4})
 	}
 	var lbox=sg.path('M'+(maxwidth-15)+' '+(start-12)+'L '+(maxwidth-6)+' '+(start-1.5)+'L '+(maxwidth-15)+' '+(start+9)).attr({stroke:'black',fill:'black',temptext:1,'stroke-linejoin':'bevel',lefttext:1})
 	var lbox2=sg.rect(2,start-12,maxwidth-17,21).attr({fill:'none',stroke:'black','stroke-width':1,temptext:1,lefttext:1,'shape-rendering':'crispEdges'})
@@ -542,13 +547,7 @@ function select(state){
 
 	var rtext=sg.text((sgwidth-maxwidth)+(maxwidth+6)/2,end-15,state).attr({'font-family':'Lato','font-size':size*1.8,'text-anchor':'middle',state:state,lefttext:0,bottom:0,temptext:1,righttext:1})
 	if(state=='allnorefo' | state=='allreform'){
-		rtext.attr({text:'reforms','font-size':size*1.4})
-	}
-	if(state=='allnorefo'){
-		var rtext2=sg.text((sgwidth-maxwidth)+(maxwidth+6)/2,end-32,'All no').attr({'font-family':'Lato','font-size':size*1.4,'text-anchor':'middle',state:state,lefttext:0,bottom:0,temptext:1,righttext:1})
-	}
-	if(state=='allreform'){
-		var rtext2=sg.text((sgwidth-maxwidth)+(maxwidth+6)/2,end-32,'All with').attr({'font-family':'Lato','font-size':size*1.4,'text-anchor':'middle',state:state,lefttext:0,bottom:0,temptext:1,righttext:1})
+		rtext.attr({text:'','font-size':size*1.4})
 	}
 	var rbox=sg.path('M'+(sgwidth-maxwidth+15)+' '+(end-12)+'L '+(sgwidth-maxwidth+6)+' '+(end-1.5)+'L '+(sgwidth-maxwidth+15)+' '+(end+9)).attr({stroke:'black',fill:'black',temptext:1,'stroke-linejoin':'bevel',righttext:1})
 	var rbox2=sg.rect(sgwidth-maxwidth+15,end-12,maxwidth-17,21).attr({fill:'none',stroke:'black','stroke-width':1,temptext:1,righttext:1,'shape-rendering':'crispEdges'})
@@ -559,7 +558,9 @@ function select(state){
 	sg.append(sg.selectAll("[fill='#67c2a5']"))
 	sg.append(sg.selectAll("[fill='#fc8d62']"))
 	sg.append(sg.selectAll("[type='front']"))
+	sg.append(sg.selectAll("[type3='front2']"))
 	sg.append(sg.selectAll("[type3='aggregates2']"))
+	sg.append(sg.selectAll("[type3='front3']"))
 }
 
 </script>
