@@ -5,20 +5,61 @@
 <head>
 	<title>School Finance Events 1990 to 2011</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js"></script>
+	<link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
 	<style>
 		@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900);
 
 		body {margin-top:50px;font-family: 'Lato'; font-weight:300; line-height:140%; padding-bottom: 100px;font-size:17px;}
 		input[type=text] {text-align:center;margin:0px;margin-right:5px;height:30px;padding:5px;max-width:40px;border-radius:3px;border:1px solid black;font-size:15px;color:#aaa;font-weight:400;}
-		select{text-align:center;margin:0px;margin-right:5px;height:30px;padding:5px;max-width:60px;border-radius:3px;border:1px solid black;font-size:15px;color:#666;font-weight:400;}
 
+
+		.select_carat{
+			position:relative;
+			display:inline-block;
+		}
+		.select_carat:after{
+			content:"\f236";
+			font-family:"Material Design Icons";
+			font-weight:700;
+			width:23px;
+			height:24px;
+			color:white;
+			font-size:1.1em;
+			right:1px;
+			top:1px;
+			position:absolute;
+			pointer-events:none;
+			background:#67c2a5;
+			border-radius:0 1 1 0;
+			padding-left:1px;
+			padding-top:4px;
+			margin-bottom:5px
+		}
+/*		.select_carat:hover:after{
+			background:#33836A;
+		}*/
+		.styled-select select{
+			margin-right:0px;
+			height:30px;
+			position:relative;
+			font-size:1em;
+			-moz-appearance:none;
+			-webkit-appearance:none;
+			padding:5px;
+			padding-right:29px;
+			border:1px solid black;
+			border-radius:2px;
+			background:white;
+			color:#555;
+			line-height:100%;
+		}
 		.slopegraph{max-width:745px}
 		.hed{font-family:'Lato';font-size:22px;font-weight:700;}
 		.dek{font-family:'Lato';font-size:17px;margin-bottom:20px;}
 		.note{font-family:'Lato';font-size:11px;margin-top:20px;line-height:1.1;}
 		.controls{text-align:center;margin-bottom:30px;}
-		.sgbuttonleft{text-align:center;margin:0px;padding:5px;height:30px;border-radius:3px;border:1px solid black;font-size:15px;color:white;font-weight:300;background:#33836A;border-top-right-radius:0px;border-bottom-right-radius:0px;margin-right:0px;padding-left:7px;padding-right:7px}
-		.sgbuttonright{text-align:center;margin:0px;padding:5px;height:30px;border-radius:3px;border:1px solid black;font-size:15px;color:white;font-weight:300;background:#33836A;border-top-left-radius:0px;border-bottom-left-radius:0px;margin-left:0px;border-left:0px;padding-left:7px;padding-right:7px}
+		.sgbuttonleft{line-height:100%;display:inline-block;text-align:center;margin:0px;padding:5px;height:30px;border-radius:2px;border:1px solid black;font-size:15px;color:white;font-weight:300;background:#33836A;border-top-right-radius:0px;border-bottom-right-radius:0px;margin-right:0px;padding-left:7px;padding-right:7px}
+		.sgbuttonright{line-height:100%;display:inline-block;text-align:center;margin:0px;padding:5px;height:30px;border-radius:2px;border:1px solid black;font-size:15px;color:white;font-weight:300;background:#33836A;border-top-left-radius:0px;border-bottom-left-radius:0px;margin-left:0px;border-left:0px;padding-left:7px;padding-right:7px}
 		.sgbuttonleft:hover{background:#67c2a5}
 		.sgbuttonright:hover{background:#67c2a5}
 		.pressed{background:#67c2a5;-moz-box-shadow:inset 0 0 2px #666;-webkit-box-shadow:inset 0 0 2px #666;box-shadow:inset 0 0 2px #666;}
@@ -28,62 +69,70 @@
 
 <body>
 
+
 	<div class='slopegraph'>
 <!-- 		<div class='hed'>Public school funding has become more progressive in most states</div>
 		<div class='dek'>Mouse over the lines to see how progressive school funding was in each statebetween 1990 and 2011. Circles indicate years where reform was enacted by the court or by legislative statute.</div>
  -->		<div class='controls'>
-			Choose a state: <select onchange='statechange()' id='state_select'>
-				<option value="AL">AL</option>
-				<option value="AK">AK</option>
-				<option value="AZ">AZ</option>
-				<option value="AR">AR</option>
-				<option value="CA">CA</option>
-				<option value="CO">CO</option>
-				<option value="CT">CT</option>
-				<option value="DE">DE</option>
-				<option value="FL">FL</option>
-				<option value="GA">GA</option>
-				<option value="ID">ID</option>
-				<option value="IL">IL</option>
-				<option value="IN">IN</option>
-				<option value="IA">IA</option>
-				<option value="KS">KS</option>
-				<option value="KY">KY</option>
-				<option value="LA">LA</option>
-				<option value="ME">ME</option>
-				<option value="MD">MD</option>
-				<option value="MA">MA</option>
-				<option value="MI">MI</option>
-				<option value="MN">MN</option>
-				<option value="MS">MS</option>
-				<option value="MO">MO</option>
-				<option value="MT">MT</option>
-				<option value="NE">NE</option>
-				<option value="NV">NV</option>
-				<option value="NH">NH</option>
-				<option value="NJ" selected>NJ</option>
-				<option value="NM">NM</option>
-				<option value="NY">NY</option>
-				<option value="NC">NC</option>
-				<option value="ND">ND</option>
-				<option value="OH">OH</option>
-				<option value="OK">OK</option>
-				<option value="OR">OR</option>
-				<option value="PA">PA</option>
-				<option value="RI">RI</option>
-				<option value="SC">SC</option>
-				<option value="SD">SD</option>
-				<option value="TN">TN</option>
-				<option value="TX">TX</option>
-				<option value="UT">UT</option>
-				<option value="VT">VT</option>
-				<option value="VA">VA</option>
-				<option value="WA">WA</option>
-				<option value="WV">WV</option>
-				<option value="WI">WI</option>
-				<option value="WY">WY</option>
-			</select>
-			<button type="button" id='statebutton' class='sgbuttonleft pressed' onclick='buttondown(1)'>State Funding</button><button type="button" id='totalbutton' class='sgbuttonright' onclick='buttondown(0)'>Total Revenues</button>
+			<div class='styled-select'>
+			Choose a state: 
+			<span class='fudge'>
+				<span class='select_carat'>
+					<select onchange='statechange()' id='state_select'>
+						<option value="AL">AL</option>
+						<option value="AK">AK</option>
+						<option value="AZ">AZ</option>
+						<option value="AR">AR</option>
+						<option value="CA">CA</option>
+						<option value="CO">CO</option>
+						<option value="CT">CT</option>
+						<option value="DE">DE</option>
+						<option value="FL">FL</option>
+						<option value="GA">GA</option>
+						<option value="ID">ID</option>
+						<option value="IL">IL</option>
+						<option value="IN">IN</option>
+						<option value="IA">IA</option>
+						<option value="KS">KS</option>
+						<option value="KY">KY</option>
+						<option value="LA">LA</option>
+						<option value="ME">ME</option>
+						<option value="MD">MD</option>
+						<option value="MA">MA</option>
+						<option value="MI">MI</option>
+						<option value="MN">MN</option>
+						<option value="MS">MS</option>
+						<option value="MO">MO</option>
+						<option value="MT">MT</option>
+						<option value="NE">NE</option>
+						<option value="NV">NV</option>
+						<option value="NH">NH</option>
+						<option value="NJ" selected>NJ</option>
+						<option value="NM">NM</option>
+						<option value="NY">NY</option>
+						<option value="NC">NC</option>
+						<option value="ND">ND</option>
+						<option value="OH">OH</option>
+						<option value="OK">OK</option>
+						<option value="OR">OR</option>
+						<option value="PA">PA</option>
+						<option value="RI">RI</option>
+						<option value="SC">SC</option>
+						<option value="SD">SD</option>
+						<option value="TN">TN</option>
+						<option value="TX">TX</option>
+						<option value="UT">UT</option>
+						<option value="VT">VT</option>
+						<option value="VA">VA</option>
+						<option value="WA">WA</option>
+						<option value="WV">WV</option>
+						<option value="WI">WI</option>
+						<option value="WY">WY</option>
+					</select>
+				</span>
+			</span>
+				<button type="button" id='statebutton' class='sgbuttonleft pressed' onclick='buttondown(1)'>State Funding</button><button type="button" id='totalbutton' class='sgbuttonright' onclick='buttondown(0)'>Total Revenues</button>
+			</div>
 		</div>
 		<svg id="slopegraph" viewbox='0,-3,745,703' ></svg>
 		<div class='note'>Note: Low income districts are those with average household-income in the bottom 20% of all in the same state districts. High-income districts are those with average household-income in the top 20% of all districts in the same state. Hawaii was excluded as there is only one school district in Hawaii.</div>
